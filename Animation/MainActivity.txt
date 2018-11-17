@@ -1,0 +1,63 @@
+package com.example.manik.animantion;
+
+import android.graphics.drawable.AnimationDrawable;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
+
+public class MainActivity extends AppCompatActivity {
+
+    ImageView iv;
+    Animation ani;
+    AnimationDrawable ad;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        iv= (ImageView) findViewById(R.id.iv1);
+
+        iv.setBackgroundResource(R.drawable.mylist);
+        ad= (AnimationDrawable) iv.getBackground();
+
+      //  ani= AnimationUtils.loadAnimation(this,R.anim.myanimation);
+
+//          ani=new TranslateAnimation(0,1200,0,0);
+//          ani.setRepeatCount(-1);
+//          ani.setDuration(1000);
+//          ani=new ScaleAnimation(0,10,0,10,50,50);
+//          ani.setDuration(2000);
+//          ani.setRepeatCount(5);
+//          ani=new RotateAnimation(0,360,200,200);
+//          ani.setDuration(2000);
+//          ani.setRepeatCount(5);
+//          ani=new AlphaAnimation(0,1);
+//          ani.setDuration(2000);
+//          ani.setRepeatCount(5);
+
+
+
+    }
+
+
+
+    public void dothis(View view) {
+
+
+       // iv.startAnimation(ani);
+        ad.start();
+    }
+
+
+    public void dostop(View view) {
+
+        iv.clearAnimation();
+
+    }
+}

@@ -1,0 +1,75 @@
+package com.example.manik.firebase1;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+public class MainActivity extends AppCompatActivity {
+Button b1,b2;
+EditText ed1,ed2;
+TextView tv1;
+int count=1;
+FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
+DatabaseReference root=firebaseDatabase.getReference();                    //for root directory
+DatabaseReference rootchild=firebaseDatabase.getReference("user1");    //for non root directory
+DatabaseReference child1=root.child("name");
+    DatabaseReference child2=rootchild.child("mob");
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        b1 = findViewById(R.id.b1);
+        b2=findViewById(R.id.b2);
+        ed1=findViewById(R.id.ed1);
+        ed2=findViewById(R.id.ed2);
+        tv1=findViewById(R.id.tv1);
+    }
+public void dothis(View v)
+        {
+            String s=ed1.getText().toString();
+            String s1=ed2.getText().toString();
+            //child1.setValue(s);
+           // child2.setValue(s1);
+            Person p=new Person(s,s1);
+            root.child("user"+count).setValue(p);
+            count++;
+        }
+public void display(View v)
+{
+    root.addListenerForSingleValueEvent(new ValueEventListener() {    //addchildeventlistner
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+//            String value=(String) dataSnapshot.getValue();
+//            tv1.setText(value);
+
+
+              Iterable<DataSnapshot> ir=dataSnapshot.getChildren();
+              StringBuilder sb=new StringBuilder();
+              for(DataSnapshot child : ir)
+              {
+                  Person p= child.getValue(Person.class);
+                  String s=p.getName()+" "+p.getMob();
+                  sb.append(s+"\n");
+              }
+            Log.d("Hello","" +sb);
+tv1.setText(sb);
+        }
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Toast.makeText(MainActivity.this,databaseError.getMessage(),Toast.LENGTH_SHORT).show();
+        }
+    });
+}
+    }
+

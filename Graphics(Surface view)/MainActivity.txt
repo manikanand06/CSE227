@@ -1,0 +1,32 @@
+package com.example.graphicsdemo;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+
+public class MainActivity extends AppCompatActivity {
+
+
+
+
+    MySurfaceView msv;
+    CustomView myCanvas;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        msv = findViewById(R.id.sv);
+        //myCanvas=new CustomView(this,null);
+        //setContentView(myCanvas);
+
+
+    }
+
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        msv.stop();
+//    }
+
+}

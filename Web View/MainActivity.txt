@@ -1,0 +1,98 @@
+package com.example.manik.mywebview;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+import android.view.KeyEvent;
+import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+
+public class MainActivity extends Activity  {
+    Button b1,b2,b3;
+    EditText ed1;
+    ProgressBar pbar;
+    String webUrl;
+    private WebView wv1;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        b1=(Button)findViewById(R.id.button1);
+        b2=(Button)findViewById(R.id.button2);
+        b3=(Button)findViewById(R.id.button3);
+        ed1=(EditText)findViewById(R.id.editText);
+        pbar=findViewById(R.id.pbr);
+        wv1=(WebView)findViewById(R.id.webView);
+        wv1.setWebViewClient(new MyBrowser());
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = ed1.getText().toString();
+                wv1.getSettings().setLoadsImagesAutomatically(true);
+                wv1.getSettings().setJavaScriptEnabled(true);
+                wv1.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+                wv1.loadUrl(url);
+            }
+        });
+
+
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(wv1.canGoBack())
+                    wv1.goBack();
+                else finish();
+            }
+        });
+        b3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(wv1.canGoForward())
+                    wv1.goForward();
+                else finish();
+
+            }
+        });
+
+        wv1.setWebViewClient(new WebViewClient() {
+
+            public void onPageFinished(WebView view, String url) {
+                webUrl=wv1.getTitle();
+                ed1.setText(""+webUrl);
+            }
+        });
+
+        wv1.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int progress) {
+                if(progress < 100 && pbar.getVisibility() == ProgressBar.GONE){
+                    pbar.setVisibility(ProgressBar.VISIBLE);
+                }
+                pbar.setProgress(progress);
+                if(progress == 100) {
+                    pbar.setVisibility(ProgressBar.GONE);
+                }
+            }
+        });
+    }
+
+    private class MyBrowser extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            return true;
+        }
+    }
+    @Override
+    public void onBackPressed() {
+
+        if(wv1.canGoBack())
+            wv1.goBack();
+        else finish();
+    }
+}
